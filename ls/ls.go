@@ -3,6 +3,7 @@ package ls
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"golang.org/x/crypto/ssh/terminal"
@@ -85,7 +86,9 @@ func LsTemplsHuman(cfg *dotcfg.File, d *decorate.Decorator) {
 	fmt.Println(d.LightBlue(d.Title("templates")))
 	if len(cfg.Templates) > 0 {
 		for _, t := range cfg.Templates {
-			fmt.Printf("%v: %v\n", d.Green(t.Name), t.FilePath)
+			dir, _ := os.Getwd()
+			path, _ := filepath.Rel(dir, t.FilePath)
+			fmt.Printf("%v: %v\n", d.Green(t.Name), path)
 		}
 	}
 }
